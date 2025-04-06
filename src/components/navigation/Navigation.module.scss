@@ -1,0 +1,7 @@
+a {
+    text-decoration: none;
+}
+a.active:active {
+    color: red;
+    text-decoration: underline;
+}
