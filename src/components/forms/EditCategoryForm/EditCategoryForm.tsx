@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, FC, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 
@@ -8,7 +8,16 @@ import Image from "react-bootstrap/Image";
 import Stack from "react-bootstrap/Stack";
 import styles from "./EditCategoryForm.module.scss";
 
-const EditCategoryForm = (props) => {
+interface Props {
+  category: {
+    id: number;
+    title: string;
+    description: string;
+    isHidden: boolean;
+  };
+}
+
+const EditCategoryForm: FC<Props> = (props) => {
   const [imgSrc, setImgSrc] = useState("");
   const [validated, setValidated] = useState(false);
   const navigate = useNavigate();
@@ -20,7 +29,7 @@ const EditCategoryForm = (props) => {
   };
 
   const onSubmit = useCallback(
-    (event) => {
+    (event: FormEvent<HTMLFormElement>) => {
       const form = event.currentTarget;
       if (form.checkValidity() === false) {
         event.preventDefault();
@@ -42,7 +51,7 @@ const EditCategoryForm = (props) => {
     [props]
   );
 
-  const onImageSelect = useCallback(async (e) => {
+  const onImageSelect = useCallback(async (e: FormEvent<HTMLFormElement>) => {
     const files = e.target.files[0];
     if (files) {
       const fileReader = new FileReader();

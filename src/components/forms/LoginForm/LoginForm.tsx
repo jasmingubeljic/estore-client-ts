@@ -1,9 +1,13 @@
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import useLogin from "../../../hooks/useLogin";
-import PropTypes from "prop-types";
+import { OnSubmit } from "../../../types";
 
-const LoginForm = (props) => {
+type Props = {
+  onSubmit: OnSubmit;
+};
+
+const LoginForm = (props: Props) => {
   const { validated, validateForm } = useLogin();
 
   return (
@@ -26,10 +30,6 @@ const LoginForm = (props) => {
       </Button>
     </Form>
   );
-};
-
-LoginForm.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
 };
 
 export default LoginForm;

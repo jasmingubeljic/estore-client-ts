@@ -5,17 +5,20 @@ import Col from "react-bootstrap/Col";
 import { useState } from "react";
 import { useNavigate, useRevalidator } from "react-router-dom";
 import { apiUrl } from "../appInfo";
+import { OnSubmitEType } from "../types";
 
 const LoginPage = () => {
   const [errors, setErrors] = useState([]);
   const navigate = useNavigate();
   const revalidator = useRevalidator();
-  const submitHandler = async (e) => {
+
+  const submitHandler = async (e: OnSubmitEType) => {
     e.preventDefault();
-    const { email, password } = e.target;
+    const email = (e.target as HTMLFormElement).email.value;
+    const password = (e.target as HTMLFormElement).password.value;
     const data = {
-      email: email.value.trim(),
-      password: password.value.trim(),
+      email: email.trim(),
+      password: password.trim(),
     };
     const res = await fetch(`${apiUrl}/auth/login`, {
       method: "POST",

@@ -2,10 +2,12 @@ import { useState, useContext, useEffect, useCallback } from "react";
 import { Context } from "../store/context-store";
 import { detectScreen } from "../utils/devices";
 import { getProducts } from "../api/apiCalls";
+import { ProductsResponseData } from "../types/Products";
+import { ErrorResponse } from "../types";
 
 export default function useFeed() {
   const { state, dispatch } = useContext(Context);
-  const [totalProductCount, setTotalProductCount] = useState();
+  const [totalProductCount, setTotalProductCount] = useState<number>(0);
   const [fetching, setFetching] = useState(true);
 
   let limit = 2;
@@ -17,7 +19,7 @@ export default function useFeed() {
   }
 
   const onGetProductsSuccess = useCallback(
-    ({ products }) => {
+    ({ products }: ProductsResponseData) => {
       setTotalProductCount(products.count);
       setFetching(false);
       dispatch({ type: "SET_PRODUCTS", payload: products.rows });
@@ -26,7 +28,7 @@ export default function useFeed() {
   );
 
   const onGetMoreProductsSuccess = useCallback(
-    ({ products }) => {
+    ({ products }: ProductsResponseData) => {
       setTotalProductCount(products.count);
       dispatch({ type: "ADD_MORE_PRODUCTS", payload: products.rows });
       setFetching(false);
@@ -39,12 +41,12 @@ export default function useFeed() {
       return;
     }
     setFetching(true);
-    getProducts(state.products.length, limit, onGetMoreProductsSuccess, (err) => console.log(err));
+    getProducts(state.products.length, limit, onGetMoreProductsSuccess, (err: ErrorResponse) => console.log(err));
   }, [state, onGetMoreProductsSuccess, totalProductCount, limit]);
 
   useEffect(() => {
     setFetching(true);
-    getProducts(null, limit, onGetProductsSuccess, (err) => console.log(err));
+    getProducts(0, limit, onGetProductsSuccess, (err: ErrorResponse) => console.log(err));
   }, [limit, onGetProductsSuccess]);
 
   return {

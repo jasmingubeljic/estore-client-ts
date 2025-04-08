@@ -1,12 +1,19 @@
+import { FC } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Image from "react-bootstrap/Image";
 import Stack from "react-bootstrap/Stack";
 import styles from "./EditProductForm.module.scss";
 import useProductForm from "../../../hooks/useProductForm";
-import PropTypes from "prop-types";
+import { Product, Categories, OnSubmit } from "../../../types";
 
-const EditProductForm = (props) => {
+interface Props {
+  product: Product;
+  categories: Categories;
+  onSubmit: OnSubmit;
+}
+
+const EditProductForm: FC<Props> = (props) => {
   const { imgSrc, validated, navigate, product, onImageSelect, onSubmit } = useProductForm(props);
 
   return (
@@ -14,7 +21,7 @@ const EditProductForm = (props) => {
       <Form noValidate validated={validated} onSubmit={onSubmit} method="POST">
         <Form.Group className="mb-4" controlId="formProductTitle">
           <Form.Label>Product name</Form.Label>
-          <Form.Control size="lg" name="title" type="title" required defaultValue={product.title} maxLength="150" />
+          <Form.Control size="lg" name="title" type="title" required defaultValue={product.title} maxLength={150} />
         </Form.Group>
         <Image src={imgSrc} className={styles.imgPreview} />
         <Form.Group className="mb-4" controlId="formProductImage">
@@ -24,7 +31,7 @@ const EditProductForm = (props) => {
         </Form.Group>
         <Form.Group className="mb-4" controlId="formProductDescription">
           <Form.Label>Description</Form.Label>
-          <Form.Control name="description" as="textarea" defaultValue={product.description} style={{ height: "100px" }} maxLength="500" />
+          <Form.Control name="description" as="textarea" defaultValue={product.description} style={{ height: "100px" }} maxLength={500} />
         </Form.Group>
         <Form.Group className="mb-4" controlId="formProductPrice">
           <Form.Label>Price</Form.Label>
@@ -66,22 +73,3 @@ const EditProductForm = (props) => {
 };
 
 export default EditProductForm;
-
-EditProductForm.propTypes = {
-  product: PropTypes.shape({
-    title: PropTypes.string,
-    description: PropTypes.string,
-    price: PropTypes.number,
-    categoryId: PropTypes.number,
-    isUsed: PropTypes.bool,
-    isHidden: PropTypes.bool,
-    image: PropTypes.string,
-  }),
-  categories: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      title: PropTypes.string.isRequired,
-    })
-  ).isRequired,
-  onSubmit: PropTypes.func.isRequired,
-};

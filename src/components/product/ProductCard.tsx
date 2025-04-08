@@ -7,9 +7,18 @@ import { prodDir } from "../../appInfo";
 import FormattedPrice from "../price/FormattedPrice";
 import TimeAgo from "react-timeago";
 import styles from "./ProductCard.module.scss";
-import PropTypes from "prop-types";
 
-const ProductCard = ({ product }) => {
+interface Props {
+  product: {
+    id: number;
+    title: string;
+    image: string;
+    price: number;
+    createdAt: string;
+  };
+}
+
+const ProductCard = ({ product }: Props) => {
   return (
     <Col>
       <Card /*border="info"*/ className="shadow-sm overflow-hidden">
@@ -48,13 +57,3 @@ const ProductCard = ({ product }) => {
 };
 
 export default ProductCard;
-
-ProductCard.propTypes = {
-  product: PropTypes.shape({
-    id: PropTypes.number.isRequired,
-    image: PropTypes.string.isRequired,
-    title: PropTypes.string.isRequired,
-    createdAt: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)]).isRequired,
-    price: PropTypes.number.isRequired,
-  }).isRequired,
-};

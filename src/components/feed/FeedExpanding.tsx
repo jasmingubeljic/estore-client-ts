@@ -5,6 +5,7 @@ import Stack from "react-bootstrap/Stack";
 import { BiSolidChevronDown } from "react-icons/bi";
 import ProductCardPlaceholderGroup from "../product/ProductCardPlaceholderGroup";
 import useFeed from "../../hooks/useFeed";
+import { Product } from "../../types";
 
 const FeedExpanding = () => {
   const { fetching, state, limit, totalProductCount, getMoreProductsHandler } = useFeed();
@@ -14,7 +15,7 @@ const FeedExpanding = () => {
   return (
     <>
       <Row xs={2} sm={2} md={2} lg={3} xl={5} className="g-2">
-        {state.products.map((p, idx) => (
+        {state.products.map((p: Product, idx: number) => (
           <ProductCard key={idx} product={p} />
         ))}
         {fetching && <ProductCardPlaceholderGroup cardQuantity={limit} />}

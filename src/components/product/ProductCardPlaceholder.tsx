@@ -1,10 +1,11 @@
+import { FC } from "react";
 import Placeholder from "react-bootstrap/Placeholder";
 import Card from "react-bootstrap/Card";
 import Col from "react-bootstrap/Col";
 import Stack from "react-bootstrap/Stack";
 import styles from "./ProductCard.module.scss";
 
-const ProductCard = () => {
+const ProductCard: FC = () => {
   return (
     <Col>
       <Card /*border="info"*/ className="shadow-sm overflow-hidden">

@@ -1,8 +1,15 @@
 import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { prodDir } from "../appInfo";
+import { Product, Categories, OnSubmit, OnSubmitEType, OnChangeEType, ProductForm } from "../types";
 
-export default function useProductForm(props) {
+interface Props {
+  product: Product;
+  categories: Categories;
+  onSubmit: OnSubmit;
+}
+
+export default function useProductForm(props: Props) {
   const [imgSrc, setImgSrc] = useState("");
   const [validated, setValidated] = useState(false);
 
@@ -23,8 +30,9 @@ export default function useProductForm(props) {
     }
   }, [props.product]);
 
-  const onImageSelect = useCallback(async (e) => {
-    const files = e.target.files[0];
+  const onImageSelect = async (e: OnChangeEType) => {
+    const inputElement = e.target as HTMLInputElement;
+    const files = inputElement.files?.[0];
     if (files) {
       const fileReader = new FileReader();
       fileReader.readAsDataURL(files);
@@ -32,10 +40,10 @@ export default function useProductForm(props) {
         setImgSrc(this.result);
       });
     }
-  }, []);
+  };
 
   const onSubmit = useCallback(
-    (event) => {
+    (event: OnSubmitEType) => {
       const form = event.currentTarget;
       if (form.checkValidity() === false) {
         event.preventDefault();

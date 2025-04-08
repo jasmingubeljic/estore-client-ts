@@ -1,7 +1,12 @@
+import { FC } from "react";
 import ProductCardPlaceholder from "./ProductCardPlaceholder";
 
-const ProductCardPlaceholderGroup = ({ cardQuantity }) => {
-  let array = [];
+interface Props {
+  cardQuantity: number;
+}
+
+const ProductCardPlaceholderGroup: FC<Props> = ({ cardQuantity }) => {
+  const array = [];
   for (let i = 1; i <= cardQuantity; i++) {
     array.push(i);
   }

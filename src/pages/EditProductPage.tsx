@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, FormEvent } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getProductById, updateProductById, getCategories } from "../api/apiCalls";
 import Container from "react-bootstrap/Container";
@@ -6,25 +6,27 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import EditProductForm from "../components/forms/EdtiProductForm/EditProductForm.jsx";
 import Loader from "../components/loader/Loader";
+import { Product, Categories, ErrorResponse } from "../types";
 
 const EditProductPage = () => {
   const params = useParams();
+  const paramsId = params.id ? Number(params.id) : NaN;
   const navigate = useNavigate();
-  const [product, setProduct] = useState();
-  const [categories, setCategories] = useState();
+  const [product, setProduct] = useState<Product>();
+  const [categories, setCategories] = useState<Categories>([]);
 
-  const onGetCategoriesSuccess = useCallback((r) => {
+  const onGetCategoriesSuccess = useCallback((r: Categories) => {
     console.log(r);
     setCategories(r);
   }, []);
 
-  const submitHandler = async (e) => {
+  const submitHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     updateProductById(
-      params.id,
+      paramsId,
       e.target,
       (success) => {
-        navigate(`/products/${success.id}`);
+        navigate(`/products/${(success as { id: number }).id}`);
       },
       (err) => {
         console.log(err);
@@ -36,17 +38,17 @@ const EditProductPage = () => {
   };
 
   useEffect(() => {
-    getCategories(onGetCategoriesSuccess, (err) => console.log(err));
+    getCategories(onGetCategoriesSuccess, (err: ErrorResponse) => console.log(err));
   }, [onGetCategoriesSuccess]);
 
   useEffect(() => {
     getProductById(
       params.id,
-      (r) => {
+      (r: Product) => {
         setProduct(r);
         console.log("product: ", r);
       },
-      (err) => {
+      (err: ErrorResponse) => {
         console.log(err);
       }
     );

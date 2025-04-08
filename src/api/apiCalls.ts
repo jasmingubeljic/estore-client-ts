@@ -1,8 +1,6 @@
 import { apiUrl } from "../appInfo";
 import { readToken } from "../utils/auth";
-
-type SuccessCallback = (resource: unknown) => void;
-type ErrorCallback = (error: unknown) => void;
+import { SuccessCallback, ErrorCallback } from "../types";
 
 export const logIn = async (email: string, password: string, onSuccess: SuccessCallback, onError: ErrorCallback): Promise<void> => {
   const data = { email, password };

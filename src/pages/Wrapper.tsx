@@ -16,7 +16,7 @@ const Wrapper = () => {
       clearToken();
       revalidator.revalidate();
     }, remainingTime);
-  }, [token]);
+  }, [token, revalidator]);
 
   return (
     <>

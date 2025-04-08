@@ -1,31 +1,17 @@
-import { createContext, useReducer, useMemo, ReactNode, Dispatch } from "react";
+import { createContext, useReducer, useMemo, ReactNode } from "react";
+import { GlobalState, ReducerAction } from "../types";
 
-type Product = {
-  id: string;
-  name: string;
+type ProviderProps = {
+  children: ReactNode;
 };
 
-type State = {
-  products: Product[];
-};
-
-type Action =
-  { type: "SET_PRODUCTS"; payload: Product[] }
-  | { type: "ADD_MORE_PRODUCTS"; payload: Product[] }
-  | { type: "SEARCH_PRODUCTS"; payload: Product[] };
-
-type ContextType = {
-  state: State;
-  dispatch: Dispatch<Action>;
-};
-
-export const Context = createContext<ContextType | undefined>(undefined);
-
-const initialVal: State = {
+const initialVal: GlobalState = {
   products: [],
 };
 
-const reducer = (state: State, action: Action) => {
+export const Context = createContext(initialVal);
+
+const reducer = (state: GlobalState, action: ReducerAction) => {
   if (action.type === "SET_PRODUCTS") {
     console.log("SET_PRODUCTS", action.payload);
     return {
@@ -47,11 +33,7 @@ const reducer = (state: State, action: Action) => {
   return state;
 };
 
-type ProviderProps = {
-  children: ReactNode;
-};
-
-const ContextProvider = ({children}: ProviderProps) => {
+const ContextProvider = ({ children }: ProviderProps) => {
   const [state, dispatch] = useReducer(reducer, initialVal);
 
   const value = useMemo(() => ({ state, dispatch }), [state]);

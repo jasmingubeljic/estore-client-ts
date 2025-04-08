@@ -1,3 +1,4 @@
+import { FC } from "react";
 import { Link } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
@@ -6,12 +7,12 @@ import Stack from "react-bootstrap/Stack";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import Image from "react-bootstrap/Image";
 import logoImage from "../../assets/images/logo-dark.svg";
-import { BiHomeAlt2, BiPlusCircle, BiLogInCircle, BiPackage, BiMenu } from "react-icons/bi";
+import { BiHomeAlt2, BiPlusCircle, BiLogInCircle, BiPackage /*, BiMenu*/ } from "react-icons/bi";
 import Search from "../search/Search";
 import useNavigation from "../../hooks/useNavigation";
 
-const Navigation = () => {
-  const { token, show, handleClose, handleShow, navigateTo, tokenRemovalHandler } = useNavigation();
+const Navigation: FC = () => {
+  const { token, show, handleClose /*, handleShow*/, navigateTo, tokenRemovalHandler } = useNavigation();
 
   return (
     <>
@@ -33,7 +34,7 @@ const Navigation = () => {
               </Navbar.Brand>
               <Nav className="me-auto gap-2 w-auto">
                 <Nav.Link onClick={() => navigateTo("/products")}>
-                  <Stack direction="horizontal" gap="1">
+                  <Stack direction="horizontal" gap={1}>
                     <BiPackage />
                     Products
                   </Stack>
@@ -51,19 +52,19 @@ const Navigation = () => {
                 </NavDropdown.Item>
               </NavDropdown> */}
                 <Nav.Link onClick={() => navigateTo("/products/add")} hidden={!token}>
-                  <Stack direction="horizontal" gap="1">
+                  <Stack direction="horizontal" gap={1}>
                     <BiPlusCircle />
                     Add Product
                   </Stack>
                 </Nav.Link>
                 <Nav.Link hidden={token} onClick={() => navigateTo("/login")}>
-                  <Stack direction="horizontal" gap="1">
+                  <Stack direction="horizontal" gap={1}>
                     <BiLogInCircle />
                     Login
                   </Stack>
                 </Nav.Link>
                 <Nav.Link hidden={!token} onClick={tokenRemovalHandler}>
-                  <Stack direction="horizontal" gap="1">
+                  <Stack direction="horizontal" gap={1}>
                     <BiLogInCircle />
                     Logout
                   </Stack>
@@ -96,10 +97,10 @@ const Navigation = () => {
               <div className="">Login</div>
             </Link>
           )}
-          <Link onClick={handleShow} className="m-auto d-flex flex-column align-items-center py-2 text-decoration-none text-dark">
+          {/* <Link onClick={handleShow} className="m-auto d-flex flex-column align-items-center py-2 text-decoration-none text-dark" to="">
             <BiMenu className="fs-4 text-dark" />
             Menu
-          </Link>
+          </Link> */}
         </Stack>
       </div>
     </>

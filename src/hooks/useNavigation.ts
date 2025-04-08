@@ -2,7 +2,8 @@ import { useState, useCallback } from "react";
 import { useNavigate, useLoaderData, useRevalidator } from "react-router-dom";
 
 export default function useNavigation() {
-  const { token } = useLoaderData("wrapperComponent");
+  const data = useLoaderData();
+  const { token } = data;
   const navigate = useNavigate();
 
   const revalidator = useRevalidator();
@@ -12,7 +13,7 @@ export default function useNavigation() {
   const handleShow = useCallback(() => setShow(true), []);
 
   const navigateTo = useCallback(
-    (url) => {
+    (url: string) => {
       handleClose();
       navigate(url);
     },
