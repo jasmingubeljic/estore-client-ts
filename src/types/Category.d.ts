@@ -6,3 +6,10 @@ export interface Category {
   createdAt: string;
   isHidden: boolean;
 }
+
+interface CategoryHtmlForm {
+  title: HTMLInputElement;
+  image: HTMLInputElement;
+  description: HTMLInputElement;
+  isHidden: HTMLInputElement;
+}

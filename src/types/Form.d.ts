@@ -4,11 +4,12 @@ export type OnSubmit = (e: FormEvent<HTMLFormElement>) => void;
 export type OnSubmitEType = FormEvent<HTMLFormElement>;
 export type OnChangeEType = ChangeEvent<HTMLInputElement>;
 
-export interface ProductForm {
-  title: {
-    value: string;
-  };
-  description: {
-    value: string;
-  };
+interface ProductForm {
+  title: HTMLInputElement;
+  image: HTMLInputElement;
+  price: HTMLInputElement;
+  isUsed: HTMLInputElement;
+  description: HTMLInputElement;
+  categoryId: HTMLInputElement;
+  isHidden: HTMLInputElement;
 }

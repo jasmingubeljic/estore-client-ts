@@ -1,17 +1,16 @@
 import { apiUrl } from "../appInfo";
 import { readToken } from "../utils/auth";
-import { SuccessCallback, ErrorCallback } from "../types";
+import { SuccessCallback, ErrorCallback, ProductForm, CategoryHtmlForm, Product } from "../types";
 
 export const logIn = async (email: string, password: string, onSuccess: SuccessCallback, onError: ErrorCallback): Promise<void> => {
   const data = { email, password };
   try {
-    let q = "/login";
+    const q = "/login";
     const response = await fetch(apiUrl + q, {
       method: "POST",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
-        // 'Authorization': user.signInUserSession.idToken.jwtToken,
       },
       body: JSON.stringify(data),
     });
@@ -27,19 +26,21 @@ export const logIn = async (email: string, password: string, onSuccess: SuccessC
   }
 };
 
-export const createProduct = async (productForm, onSuccess: SuccessCallback, onError: ErrorCallback) => {
+export const createProduct = async (productForm: ProductForm, onSuccess: SuccessCallback, onError: ErrorCallback) => {
   const { title, image, price, isUsed, description, categoryId, isHidden } = productForm;
   const formData = new FormData();
   formData.append("title", title.value);
-  formData.append("image", image.files[0]);
+  if (image.files && image.files[0]) {
+    formData.append("image", image.files[0]);
+  }
   formData.append("price", price.value);
-  formData.append("isUsed", isUsed.checked);
+  formData.append("isUsed", isUsed.checked.toString());
   formData.append("description", description.value);
   formData.append("categoryId", categoryId.value);
-  formData.append("isHidden", isHidden.checked);
+  formData.append("isHidden", isHidden.checked.toString());
 
   try {
-    let q = "/admin/product";
+    const q = "/admin/product";
     const response = await fetch(apiUrl + q, {
       method: "POST",
       headers: {
@@ -58,20 +59,22 @@ export const createProduct = async (productForm, onSuccess: SuccessCallback, onE
   }
 };
 
-export const updateProductById = async (id: number, productData: unknown, onSuccess: SuccessCallback, onError: ErrorCallback) => {
+export const updateProductById = async (id: number, productData: ProductForm, onSuccess: SuccessCallback, onError: ErrorCallback) => {
   const { title, image, price, isUsed, description, categoryId, isHidden } = productData;
 
   const data = new FormData();
   data.append("title", title.value);
-  data.append("image", image.files[0]);
+  if (image.files && image.files[0]) {
+    data.append("image", image.files[0]);
+  }
   data.append("price", price.value);
-  data.append("isUsed", isUsed.checked);
+  data.append("isUsed", isUsed.checked.toString());
   data.append("description", description.value);
   data.append("categoryId", categoryId.value);
-  data.append("isHidden", isHidden.checked);
+  data.append("isHidden", isHidden.checked.toString());
 
   try {
-    let q = "/admin/product/" + id;
+    const q = "/admin/product/" + id;
     const response = await fetch(apiUrl + q, {
       method: "PUT",
       headers: {
@@ -90,9 +93,9 @@ export const updateProductById = async (id: number, productData: unknown, onSucc
   }
 };
 
-export const getProducts = async (offset: number, limit: number, onSuccess, onError) => {
+export const getProducts = async (offset: number, limit: number, onSuccess: SuccessCallback, onError: ErrorCallback) => {
   try {
-    let q = `/product?offset=${offset}&limit=${limit}`;
+    const q = `/product?offset=${offset}&limit=${limit}`;
     const response = await fetch(apiUrl + q, {
       method: "GET",
       headers: {
@@ -112,9 +115,9 @@ export const getProducts = async (offset: number, limit: number, onSuccess, onEr
   }
 };
 
-export const getProductById = async (id, onSuccess, onError) => {
+export const getProductById = async (id: number, onSuccess: SuccessCallback, onError: ErrorCallback) => {
   try {
-    let q = "/product/" + id;
+    const q = "/product/" + id;
 
     const response = await fetch(apiUrl + q, {
       method: "GET",
@@ -135,9 +138,16 @@ export const getProductById = async (id, onSuccess, onError) => {
   }
 };
 
-export const queryProducts = async (queryStr, categoryId, offset, limit, onSuccess, onError) => {
+export const queryProducts = async (
+  queryStr: string,
+  categoryId: number,
+  offset: string,
+  limit: string,
+  onSuccess: SuccessCallback,
+  onError: ErrorCallback
+) => {
   try {
-    let q = `/product/query?offset=${offset}&limit=${limit}&queryStr=${queryStr}&categoryId=${categoryId}`;
+    const q = `/product/query?offset=${offset}&limit=${limit}&queryStr=${queryStr}&categoryId=${categoryId}`;
     const response = await fetch(apiUrl + q, {
       method: "GET",
     });
@@ -152,16 +162,18 @@ export const queryProducts = async (queryStr, categoryId, offset, limit, onSucce
   }
 };
 
-export const createCategory = async (categoryForm, onSuccess, onError) => {
+export const createCategory = async (categoryForm: CategoryHtmlForm, onSuccess: SuccessCallback, onError: ErrorCallback) => {
   const { title, image, description, isHidden } = categoryForm;
   const formData = new FormData();
   formData.append("title", title.value);
-  formData.append("image", image.files[0]);
+  if (image.files && image.files[0]) {
+    formData.append("image", image.files[0]);
+  }
   formData.append("description", description.value);
-  formData.append("isHidden", isHidden.checked);
+  formData.append("isHidden", isHidden.checked.toString());
 
   try {
-    let q = "/admin/category";
+    const q = "/admin/category";
     const response = await fetch(apiUrl + q, {
       method: "POST",
       headers: {
@@ -180,9 +192,9 @@ export const createCategory = async (categoryForm, onSuccess, onError) => {
   }
 };
 
-export const getCategories = async (onSuccess, onError) => {
+export const getCategories = async (onSuccess: SuccessCallback, onError: ErrorCallback) => {
   try {
-    let q = `/category`;
+    const q = `/category`;
     const response = await fetch(apiUrl + q, {
       method: "GET",
       headers: {
@@ -202,9 +214,9 @@ export const getCategories = async (onSuccess, onError) => {
   }
 };
 
-export const getCategoryById = async (id, onSuccess, onError) => {
+export const getCategoryById = async (id: number, onSuccess: SuccessCallback, onError: ErrorCallback) => {
   try {
-    let q = "/category/" + id;
+    const q = "/category/" + id;
 
     const response = await fetch(apiUrl + q, {
       method: "GET",
@@ -225,9 +237,9 @@ export const getCategoryById = async (id, onSuccess, onError) => {
   }
 };
 
-export const deleteProduct = async (id, product, onSuccess, onError) => {
+export const deleteProduct = async (id: number, product: Product, onSuccess: SuccessCallback, onError: ErrorCallback) => {
   try {
-    let q = `/admin/product/${id}`;
+    const q = `/admin/product/${id}`;
     const response = await fetch(apiUrl + q, {
       method: "DELETE",
       headers: {

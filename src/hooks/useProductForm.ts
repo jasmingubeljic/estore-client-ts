@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { prodDir } from "../appInfo";
-import { Product, Categories, OnSubmit, OnSubmitEType, OnChangeEType, ProductForm } from "../types";
+import { Product, Categories, OnSubmit, OnSubmitEType, OnChangeEType } from "../types";
 
 interface Props {
   product: Product;
